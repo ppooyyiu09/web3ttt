@@ -1,0 +1,23 @@
+from web3 import Web3
+
+# 连接到以太坊节点
+web3 = Web3(Web3.HTTPProvider('https://mainnet.infura.io/v3/YOUR_INFURA_PROJECT_ID'))
+
+# 要创建的账户数量
+num_accounts = 10
+
+# 密码
+password = 'your_password'
+
+# 创建账户
+accounts = []
+for i in range(num_accounts):
+    account = web3.eth.account.create(password)
+    accounts.append(account)
+
+# 打印账户地址和私钥
+for i, account in enumerate(accounts):
+    print(f"Account {i+1}:")
+    print("Address:", account.address)
+    print("Private Key:", account.privateKey.hex())
+    print()
