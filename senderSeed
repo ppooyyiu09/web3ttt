@@ -1,0 +1,40 @@
+import io.xpring.common.XrplNetwork;
+import io.xpring.xrpl.TransactionResult;
+import io.xpring.xrpl.Wallet;
+import io.xpring.xrpl.XrpClient;
+
+import java.math.BigDecimal;
+import java.util.concurrent.TimeoutException;
+
+public class XrpTransfer {
+    public static void main(String[] args) {
+        // XRP 网络配置
+        XrplNetwork xrplNetwork = XrplNetwork.TEST;
+
+        // 发件人钱包密钥
+        String senderSeed = "YOUR_SENDER_SEED";
+
+        // 收件人地址
+        String recipientAddress = "rXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX";
+
+        // 转账金额（XRP）
+        BigDecimal amountXrp = new BigDecimal("10");
+
+        try {
+            // 创建发件人钱包
+            Wallet senderWallet = Wallet.fromSeed(senderSeed, xrplNetwork);
+
+            // 创建 XRP 客户端
+            XrpClient xrpClient = new XrpClient("grpc.xpring.tech:80", xrplNetwork);
+
+            // 执行转账操作
+            TransactionResult transactionResult = xrpClient.send(senderWallet, recipientAddress, amountXrp);
+
+            // 打印交易结果
+            System.out.println("Transaction hash: " + transactionResult.hash());
+            System.out.println("Transaction status: " + transactionResult.status());
+        } catch (TimeoutException e) {
+            e.printStackTrace();
+        }
+    }
+}
